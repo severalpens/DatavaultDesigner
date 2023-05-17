@@ -1,0 +1,22 @@
+﻿@page "/form-example-1"
+@using DatavaultDesignerStar.Models;
+@using Microsoft.Extensions.Logging
+@inject ILogger<FormExample1> Logger
+
+<EditForm Model="@exampleModel" OnSubmit="@HandleSubmit">
+    <InputText id="name" @bind-Value="exampleModel.Name" />
+
+    <button type="submit">Submit</button>
+</EditForm>
+
+@code {
+    private ExampleModel exampleModel = new();
+
+    private void HandleSubmit()
+    {
+        var dt = new DateTime(DateTime.Now.Ticks);
+        Logger.LogInformation(dt.ToLongTimeString());
+
+        // Process the form
+    }
+}

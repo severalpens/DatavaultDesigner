@@ -1,0 +1,77 @@
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">DatavaultDesignerStar</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="ReleasesView">
+                <span class="oi oi-plus" aria-hidden="true"></span> ReleasesView
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="NewRelease">
+                <span class="oi oi-plus" aria-hidden="true"></span> NewRelease
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="KeyMapping">
+                <span class="oi oi-plus" aria-hidden="true"></span> KeyMapping
+            </NavLink>
+        </div>
+        <div class="mt-5">
+        <h5 class="text-white" style="margin-left:20px">CRUD Tables</h5>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="TblColCrud">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> TblColCrud
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="TblReleaseCrud">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> TblReleaseCrud
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="colcrud">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Col Crud
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="propcrud">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Prop Crud
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="releasecrud">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Release Crud
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="tblcrud">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Tbl Crud
+                </NavLink>
+            </div>
+        </div>
+
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

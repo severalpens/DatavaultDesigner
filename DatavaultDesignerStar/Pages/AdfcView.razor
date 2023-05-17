@@ -1,0 +1,56 @@
+﻿@page "/adfc"
+
+@using DatavaultDesignerStar.Models;
+@using DatavaultDesignerStar.Data;
+@using DatavaultDesignerStar.Models.AdfConfig;
+@using Microsoft.EntityFrameworkCore;
+@using System.Linq;
+@using System.Text.Json.Nodes;
+@inject DatavaultDesignerStarDbContext DbContext
+@inject ILogger<AdfcView> Logger
+
+
+<PageTitle>Adfc View </PageTitle>
+<h1>Adfc View</h1>
+<AuthorizeView>
+    <ChildContent Context="authContext">
+        <EditForm Model="@exampleModel" OnSubmit="@PopulateTables">
+            <button type="submit">Submit</button>
+        </EditForm>
+
+    </ChildContent>
+</AuthorizeView>
+@code {
+    private ExampleModel exampleModel = new();
+
+
+    public async Task PopulateTables()
+    {
+        List<AdfConfigExtract> Extracts = DbContext.AdfConfigExtracts.ToList();
+
+        foreach (AdfConfigExtract Extract in Extracts)
+        {
+            if (Extract.ParameterValue != null)
+            {
+
+                if (Extract.ParameterValue.Contains("{") || Extract.ParameterValue.Contains("["))
+                {
+                    SchemalessToSchema sl2s = new SchemalessToSchema(Logger);
+                    sl2s.Run(Extract.ParameterValue);
+
+                }
+
+            }
+            var dt = new DateTime(DateTime.Now.Ticks);
+            Logger.LogInformation($"PopulateTables called at {dt.ToLongTimeString()}");
+        }
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        //PopulateTables();
+    }
+
+
+}

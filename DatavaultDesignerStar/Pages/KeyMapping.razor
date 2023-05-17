@@ -1,0 +1,247 @@
+﻿@page "/KeyMapping/{r_id?}/{t_id?}"
+
+@using DatavaultDesignerStar.Models;
+@using DatavaultDesignerStar.Data;
+@using Microsoft.EntityFrameworkCore;
+@using System.Linq;
+@inject DatavaultDesignerStarDbContext DbContext
+
+<PageTitle>Key Mapping</PageTitle>
+<h1>Key Mapping</h1>
+<AuthorizeView>
+    <div class="row">
+        <div class="col-6">
+            <label class="form-label" for="select-version">Version:</label>
+            <InputSelect class="form-select  w-100" @bind-Value="ReleaseId">
+                <option></option>
+                @foreach (var rl in Releases)
+                {
+                    <option value="@rl.ReleaseId">@rl.ReleaseOrderId) @rl.ReleaseDescription</option>
+                }
+            </InputSelect>
+            <label class="form-label" for="select-version">Table:</label>
+            <InputSelect class="form-select  w-100" @bind-Value="TblId">
+                <option></option>
+                @foreach (Tbl tbl in Tbls)
+                {
+                    <option value="@tbl.TblId">@tbl.TblId) @tbl.TblName</option>
+                }
+            </InputSelect>
+            <button class="btn btn-success mt-4" onclick="@SaveWrapper">SaveText</button>
+
+        </div>
+    </div>
+    <div class="row flex-row flex-nowrap">
+        <table class="table table-hover table-sm" style="overflow-x:scroll">
+            <thead>
+                <tr>
+                    <th>OrderId</th>
+                    <th>Candidate<br />Field</th>
+                    <th>Included<br />Field</th>
+                    <th>ColName</th>
+                    <th>ColType</th>
+                    <th>ColTypeLen</th>
+                    <th>Pk</th>
+                    <th>HshKy</th>
+                    <th>HshDiff</th>
+                    <th>HshKyMember</th>
+                    <th>HshDiffMember</th>
+                    <th>Fk</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var rtc in FilteredRTCs)
+                {
+                    <tr id="@rtc.ReleaseTblColId" class="primary">
+                        <td>
+                            <InputNumber style="width:80px" class="form-control" @bind-Value="@rtc.OrderId" />
+                        </td>
+                        <td>
+                            <InputCheckbox disabled class="form-check" @bind-Value="@rtc.CandidateField" />
+                        </td>
+                        <td>
+                            <InputCheckbox class="form-check" @bind-Value="@rtc.IncludedField" />
+                        </td>
+                        @if (rtc.IncludedField)
+                        {
+                            <td><InputText class="form-control" @bind-Value="@rtc.ColName" /></td>
+                            <td>
+                                <InputSelect class="form-select  w-100" @bind-Value="@rtc.ColTypeId">
+                                    <option></option>
+                                    @foreach (var cv in ColTypes)
+                                    {
+                                        <option value="@cv.ColTypeId">@cv.ColTypeName</option>
+                                    }
+                                </InputSelect>
+
+                            </td>
+                            <td style="width:20px">
+                                @if (rtc.ColTypeId == 2 || rtc.ColTypeId == 3)
+                                {
+                                    <InputNumber disabled class="form-control" @bind-Value="@rtc.ColTypeLen" />
+                                }
+                                else
+                                {
+                                    <InputNumber class="form-control" @bind-Value="@rtc.ColTypeLen" />
+                                }
+                            </td>
+
+                        }
+                        else
+                        {
+                            <td class="text-decoration-line-through">@rtc.ColName</td>
+                            <td class="text-decoration-line-through">@rtc.ColType.ColTypeName</td>
+                            <td class="text-decoration-line-through"></td>
+
+
+                        }
+                        <td>
+                            <InputCheckbox class="form-check" @bind-Value="@rtc.Pk" />
+                        </td>
+                        <td>
+                            <InputCheckbox class="form-check" @bind-Value="@rtc.HshKy" />
+                        </td>
+                        <td>
+                            <InputCheckbox class="form-check" @bind-Value="@rtc.HshDiff" />
+                        </td>
+                        <td>
+                            <InputCheckbox class="form-check" @bind-Value="@rtc.HshKyMember" />
+                        </td>
+                        <td>
+                            <InputCheckbox class="form-check" @bind-Value="@rtc.HshDiffMember" />
+                        </td>
+                        <td>
+                            <InputCheckbox class="form-check" @bind-Value="@rtc.Fk" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</AuthorizeView>
+@code {
+
+    public List<Release?> Releases = new List<Release?>();
+    public List<ColType> ColTypes = new List<ColType>();
+    public List<Tbl?> Tbls = new List<Tbl?>();
+    public List<ReleaseTblCol> FilteredRTCs = new List<ReleaseTblCol>();
+    public string SaveText { get; set; } = "Save";
+    public List<int?> tids;
+    protected override async Task OnInitializedAsync()
+    {
+        UpdateFilters();
+    }
+
+    public void UpdateFilters()
+    {
+        ColTypes = DbContext.ColTypes.ToList();
+        Releases = DbContext.Releases.Where(x => x.IsActive).ToList();
+
+        if(ReleaseId != null)
+        {
+            tids = DbContext
+            .ReleaseTblCols
+            .Where(x => x.ReleaseId == ReleaseId)
+            .Select(x => x.TblId)
+            .ToList();
+
+            Tbls = DbContext.Tbls
+            .Where(x => tids.Contains(x.TblId))
+            .OrderBy(x => x.OrderId)
+            .ToList();
+
+            FilteredRTCs = DbContext
+            .ReleaseTblCols
+            .Where(x => tids.Contains(x.TblId))
+            .OrderBy(x => x.OrderId)
+            .ToList();
+
+        }
+
+        if (TblId != null)
+        {
+            FilteredRTCs = DbContext
+            .ReleaseTblCols
+            .Where(x => x.TblId == TblId)
+            .OrderBy(x => x.OrderId)
+            .ToList();
+        }
+
+    }
+
+
+
+
+    private int releaseId;
+    public int ReleaseId
+    {
+        get { return releaseId; }
+        set
+        {
+            releaseId = value;
+            UpdateFilters();
+        }
+    }
+
+    private Release release;
+    public Release Release
+    {
+        get { return release; }
+        set
+        {
+            release = value;
+        }
+    }
+
+
+
+    private int tblId;
+    public int TblId
+    {
+        get { return tblId; }
+        set
+        {
+            tblId = value;
+            UpdateFilters();
+        }
+    }
+    private Tbl tbl;
+    public Tbl Tbl
+    {
+        get { return tbl; }
+        set
+        {
+            tbl = value;
+
+        }
+    }
+
+
+    //---------------------------------------------------------------------------------------------------
+    //ON INITIALIZED-------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+    public async Task SaveWrapper()
+    {
+        SaveText = "Saving..";
+        await Save();
+        SaveText = "Save";
+    }
+
+    public async Task Save()
+    {
+
+        DbContext.UpdateRange(FilteredRTCs);
+        await DbContext.SaveChangesAsync();
+        UpdateFilters();
+
+
+    }
+
+
+}

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33424.131
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatavaultDesignerStar", "DatavaultDesignerStar\DatavaultDesignerStar.csproj", "{16995BA0-F6BC-4CD8-8F5E-8CE48DE64698}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatavaultDesignerStar.Console", "DatavaultDesignerStar.Console\DatavaultDesignerStar.Console.csproj", "{7622021D-EAA6-4B1D-BE3C-7B443ABF0C51}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{16995BA0-F6BC-4CD8-8F5E-8CE48DE64698}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16995BA0-F6BC-4CD8-8F5E-8CE48DE64698}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16995BA0-F6BC-4CD8-8F5E-8CE48DE64698}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16995BA0-F6BC-4CD8-8F5E-8CE48DE64698}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7622021D-EAA6-4B1D-BE3C-7B443ABF0C51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7622021D-EAA6-4B1D-BE3C-7B443ABF0C51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7622021D-EAA6-4B1D-BE3C-7B443ABF0C51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7622021D-EAA6-4B1D-BE3C-7B443ABF0C51}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2FFC2E17-B7F9-4B4F-A866-DFDE47ED8EBB}
+	EndGlobalSection
+EndGlobal

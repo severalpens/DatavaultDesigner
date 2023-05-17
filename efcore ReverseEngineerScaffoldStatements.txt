@@ -1,0 +1,4 @@
+
+dotnet user-secrets init
+dotnet user-secrets set ConnectionStrings:DatavaultDesignerStar "Data Source=mydb.database.windows.net;Initial Catalog=DatavaultDesignerStarDB;Persist Security Info=True;User ID=datavaultdesignerstar;Password=*************"  
+dotnet ef dbcontext scaffold Name=ConnectionStrings:DatavaultDesignerStar Microsoft.EntityFrameworkCore.SqlServer --context-dir Data --output-dir Models --data-annotations
